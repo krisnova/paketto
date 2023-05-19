@@ -1,0 +1,21 @@
+CVS	3/17/2003
+	Jason added mingw32 support on mingw/linux and mingw/win32.
+
+1.10  12/24/2002
+      OpenBSD support thanks to Matt Watchinski; Solaris support with
+      the help of Jason Spence.  New "Distco" mode actively discovers
+      distance to remote hosts via analyzing the TTL in returned
+      TCP RSTs. (Filipe Almeida pointed out that RSTs dont get their
+      TTLs reset, so RST TTL = distance there and back.  Nice!)
+      Cleanups to fix endianness issues.  Libnet was patched to
+      pack its variables, which is needed if you want to
+      overlay libnet structures directly onto libpcap frames.
+      Traceroute hopcount determination returned
+      to analyzing returned source ports instead of returned IP ID
+      values, temporarily fixing Solaris fixed IP ID bug on
+      L3 Raw Sockets.  Proper documentation remains to be written,
+      but some useful material has been provided.  Finally...
+      Happy Holidays!
+
+1.00  First public release not from a Singaporean cyber cafe :-)
+

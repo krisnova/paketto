@@ -1,0 +1,751 @@
+# Makefile.in generated automatically by automake 1.4-p5 from Makefile.am
+
+# Copyright (C) 1994, 1995-8, 1999, 2001 Free Software Foundation, Inc.
+# This Makefile.in is free software; the Free Software Foundation
+# gives unlimited permission to copy and/or distribute it,
+# with or without modifications, as long as this notice is preserved.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY, to the extent permitted by law; without
+# even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE.
+
+# Copyright (C) 2002 Doxpara
+# Licensed under the BSD License.
+
+
+SHELL = @SHELL@
+
+srcdir = @srcdir@
+top_srcdir = @top_srcdir@
+VPATH = @srcdir@
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+
+bindir = @bindir@
+sbindir = @sbindir@
+libexecdir = @libexecdir@
+datadir = @datadir@
+sysconfdir = @sysconfdir@
+sharedstatedir = @sharedstatedir@
+localstatedir = @localstatedir@
+libdir = @libdir@
+infodir = @infodir@
+mandir = @mandir@
+includedir = @includedir@
+oldincludedir = /usr/include
+
+DESTDIR =
+
+pkgdatadir = $(datadir)/@PACKAGE@
+pkglibdir = $(libdir)/@PACKAGE@
+pkgincludedir = $(includedir)/@PACKAGE@
+
+top_builddir = ..
+
+ACLOCAL = @ACLOCAL@
+AUTOCONF = @AUTOCONF@
+AUTOMAKE = @AUTOMAKE@
+AUTOHEADER = @AUTOHEADER@
+
+INSTALL = @INSTALL@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@ $(AM_INSTALL_PROGRAM_FLAGS)
+INSTALL_DATA = @INSTALL_DATA@
+INSTALL_SCRIPT = @INSTALL_SCRIPT@
+transform = @program_transform_name@
+
+NORMAL_INSTALL = :
+PRE_INSTALL = :
+POST_INSTALL = :
+NORMAL_UNINSTALL = :
+PRE_UNINSTALL = :
+POST_UNINSTALL = :
+host_alias = @host_alias@
+host_triplet = @host@
+AS = @AS@
+CC = @CC@
+DLLTOOL = @DLLTOOL@
+DXP_GHT_FLAGS = @DXP_GHT_FLAGS@
+DXP_GHT_LIBS = @DXP_GHT_LIBS@
+DXP_IOCCOM_LIBS = @DXP_IOCCOM_LIBS@
+DXP_LIBNET_FLAGS = @DXP_LIBNET_FLAGS@
+DXP_LIBNET_LIBS = @DXP_LIBNET_LIBS@
+DXP_PCAP_FLAGS = @DXP_PCAP_FLAGS@
+DXP_PCAP_LIBS = @DXP_PCAP_LIBS@
+DXP_TC_FLAGS = @DXP_TC_FLAGS@
+DXP_TC_LIBS = @DXP_TC_LIBS@
+ECHO = @ECHO@
+EXEEXT = @EXEEXT@
+LIBTOOL = @LIBTOOL@
+LN_S = @LN_S@
+MAKEINFO = @MAKEINFO@
+OBJDUMP = @OBJDUMP@
+OBJEXT = @OBJEXT@
+PACKAGE = @PACKAGE@
+RANLIB = @RANLIB@
+STRIP = @STRIP@
+VERSION = @VERSION@
+dxp_libnet_config = @dxp_libnet_config@
+
+EXTRA_DIST = config.h libipq.h libipq.a ip_queue_64.h base64.h g711.h
+
+AM_CFLAGS = @CFLAGS@ @DXP_LIBNET_FLAGS@ @DXP_PCAP_FLAGS@ @DXP_TC_FLAGS@ -I@DXP_GHT_FLAGS@ -pthread
+LIBS = @DXP_LIBNET_LIBS@ @DXP_PCAP_LIBS@ @DXP_TC_LIBS@ @DXP_IOCCOM_LIBS@ @DXP_GHT_LIBS@ @LIBS@ -lpthread
+
+lib_LTLIBRARIES = libpaketto.la
+libpaketto_la_SOURCES = libpaketto.c pk_scan.c base64.c
+
+scanrand2_SOURCES = scanrand2.c
+scanrand2_LDADD = libpaketto.la
+
+homer_SOURCES = homer.c
+homer_LDADD = libipq.a libpaketto.la 
+
+donut_SOURCES = donut.c
+donut_LDADD = libipq.a libpaketto.la
+
+ackmon_SOURCES = ackmon.c
+ackmon_LDADD = libpaketto.la
+
+packet2sql_SOURCES = packet2sql.c
+packet2sql_LDADD = libpaketto.la
+
+lc2_SOURCES = lc2.c
+lc2_LDADD = libpaketto.la
+
+tincan_SOURCES = tincan.c g711.c
+tincan_LDADD = libpaketto.la
+
+finx_SOURCES = finx.c
+finx_LDADD = libpaketto.la
+
+paratrace2_SOURCES = paratrace2.c
+paratrace2_LDADD = libpaketto.la
+
+miname_SOURCES = miname.c
+miname_LDADD = libpaketto.la
+
+prox_SOURCES = prox.c
+prox_LDADD = libpaketto.la
+
+nodistdir = ""
+#sbin_PROGRAMS = lc scanapi
+
+#bin_PROGRAMS  = phentropy demo1 demo2 demo3 demo4 demo5 demo6 demo7 demo8 demo9
+bin_PROGRAMS = scanrand2 homer donut ackmon packet2sql lc2 finx tincan paratrace2 miname prox
+
+include_HEADERS = libpaketto.h pk_scan.h pk_serv.h base64.h
+mkinstalldirs = $(SHELL) $(top_srcdir)/config/mkinstalldirs
+CONFIG_HEADER = config.h
+CONFIG_CLEAN_FILES = 
+LTLIBRARIES =  $(lib_LTLIBRARIES)
+
+
+DEFS = @DEFS@ -I. -I$(srcdir) -I.
+CPPFLAGS = @CPPFLAGS@
+LDFLAGS = @LDFLAGS@
+libpaketto_la_LDFLAGS = 
+libpaketto_la_LIBADD = 
+libpaketto_la_OBJECTS =  libpaketto.lo pk_scan.lo base64.lo
+bin_PROGRAMS =  scanrand2$(EXEEXT) homer$(EXEEXT) donut$(EXEEXT) \
+ackmon$(EXEEXT) packet2sql$(EXEEXT) lc2$(EXEEXT) finx$(EXEEXT) \
+tincan$(EXEEXT) paratrace2$(EXEEXT) miname$(EXEEXT) prox$(EXEEXT)
+PROGRAMS =  $(bin_PROGRAMS)
+
+scanrand2_OBJECTS =  scanrand2.$(OBJEXT)
+scanrand2_DEPENDENCIES =  libpaketto.la
+scanrand2_LDFLAGS = 
+homer_OBJECTS =  homer.$(OBJEXT)
+homer_DEPENDENCIES =  libipq.a libpaketto.la
+homer_LDFLAGS = 
+donut_OBJECTS =  donut.$(OBJEXT)
+donut_DEPENDENCIES =  libipq.a libpaketto.la
+donut_LDFLAGS = 
+ackmon_OBJECTS =  ackmon.$(OBJEXT)
+ackmon_DEPENDENCIES =  libpaketto.la
+ackmon_LDFLAGS = 
+packet2sql_OBJECTS =  packet2sql.$(OBJEXT)
+packet2sql_DEPENDENCIES =  libpaketto.la
+packet2sql_LDFLAGS = 
+lc2_OBJECTS =  lc2.$(OBJEXT)
+lc2_DEPENDENCIES =  libpaketto.la
+lc2_LDFLAGS = 
+finx_OBJECTS =  finx.$(OBJEXT)
+finx_DEPENDENCIES =  libpaketto.la
+finx_LDFLAGS = 
+tincan_OBJECTS =  tincan.$(OBJEXT) g711.$(OBJEXT)
+tincan_DEPENDENCIES =  libpaketto.la
+tincan_LDFLAGS = 
+paratrace2_OBJECTS =  paratrace2.$(OBJEXT)
+paratrace2_DEPENDENCIES =  libpaketto.la
+paratrace2_LDFLAGS = 
+miname_OBJECTS =  miname.$(OBJEXT)
+miname_DEPENDENCIES =  libpaketto.la
+miname_LDFLAGS = 
+prox_OBJECTS =  prox.$(OBJEXT)
+prox_DEPENDENCIES =  libpaketto.la
+prox_LDFLAGS = 
+CFLAGS = @CFLAGS@
+COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+CCLD = $(CC)
+LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(LDFLAGS) -o $@
+HEADERS =  $(include_HEADERS)
+
+DIST_COMMON =  ./stamp-h.in Makefile.am Makefile.in config.h.in
+
+
+DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
+
+TAR = gtar
+GZIP_ENV = --best
+SOURCES = $(libpaketto_la_SOURCES) $(scanrand2_SOURCES) $(homer_SOURCES) $(donut_SOURCES) $(ackmon_SOURCES) $(packet2sql_SOURCES) $(lc2_SOURCES) $(finx_SOURCES) $(tincan_SOURCES) $(paratrace2_SOURCES) $(miname_SOURCES) $(prox_SOURCES)
+OBJECTS = $(libpaketto_la_OBJECTS) $(scanrand2_OBJECTS) $(homer_OBJECTS) $(donut_OBJECTS) $(ackmon_OBJECTS) $(packet2sql_OBJECTS) $(lc2_OBJECTS) $(finx_OBJECTS) $(tincan_OBJECTS) $(paratrace2_OBJECTS) $(miname_OBJECTS) $(prox_OBJECTS)
+
+all: all-redirect
+.SUFFIXES:
+.SUFFIXES: .S .c .lo .o .obj .s
+$(srcdir)/Makefile.in: Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
+	cd $(top_srcdir) && $(AUTOMAKE) --gnu --include-deps src/Makefile
+
+Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
+	cd $(top_builddir) \
+	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+
+
+config.h: stamp-h
+	@if test ! -f $@; then \
+		rm -f stamp-h; \
+		$(MAKE) stamp-h; \
+	else :; fi
+stamp-h: $(srcdir)/config.h.in $(top_builddir)/config.status
+	cd $(top_builddir) \
+	  && CONFIG_FILES= CONFIG_HEADERS=src/config.h \
+	     $(SHELL) ./config.status
+	@echo timestamp > stamp-h 2> /dev/null
+$(srcdir)/config.h.in: $(srcdir)/stamp-h.in
+	@if test ! -f $@; then \
+		rm -f $(srcdir)/stamp-h.in; \
+		$(MAKE) $(srcdir)/stamp-h.in; \
+	else :; fi
+$(srcdir)/stamp-h.in: $(top_srcdir)/configure.in $(ACLOCAL_M4) 
+	cd $(top_srcdir) && $(AUTOHEADER)
+	@echo timestamp > $(srcdir)/stamp-h.in 2> /dev/null
+
+mostlyclean-hdr:
+
+clean-hdr:
+
+distclean-hdr:
+	-rm -f config.h
+
+maintainer-clean-hdr:
+
+mostlyclean-libLTLIBRARIES:
+
+clean-libLTLIBRARIES:
+	-test -z "$(lib_LTLIBRARIES)" || rm -f $(lib_LTLIBRARIES)
+
+distclean-libLTLIBRARIES:
+
+maintainer-clean-libLTLIBRARIES:
+
+install-libLTLIBRARIES: $(lib_LTLIBRARIES)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libdir)
+	@list='$(lib_LTLIBRARIES)'; for p in $$list; do \
+	  if test -f $$p; then \
+	    echo "$(LIBTOOL)  --mode=install $(INSTALL) $$p $(DESTDIR)$(libdir)/$$p"; \
+	    $(LIBTOOL)  --mode=install $(INSTALL) $$p $(DESTDIR)$(libdir)/$$p; \
+	  else :; fi; \
+	done
+
+uninstall-libLTLIBRARIES:
+	@$(NORMAL_UNINSTALL)
+	list='$(lib_LTLIBRARIES)'; for p in $$list; do \
+	  $(LIBTOOL)  --mode=uninstall rm -f $(DESTDIR)$(libdir)/$$p; \
+	done
+
+.c.o:
+	$(COMPILE) -c $<
+
+# FIXME: We should only use cygpath when building on Windows,
+# and only if it is available.
+.c.obj:
+	$(COMPILE) -c `cygpath -w $<`
+
+.s.o:
+	$(COMPILE) -c $<
+
+.S.o:
+	$(COMPILE) -c $<
+
+mostlyclean-compile:
+	-rm -f *.o core *.core
+	-rm -f *.$(OBJEXT)
+
+clean-compile:
+
+distclean-compile:
+	-rm -f *.tab.c
+
+maintainer-clean-compile:
+
+.c.lo:
+	$(LIBTOOL) --mode=compile $(COMPILE) -c $<
+
+.s.lo:
+	$(LIBTOOL) --mode=compile $(COMPILE) -c $<
+
+.S.lo:
+	$(LIBTOOL) --mode=compile $(COMPILE) -c $<
+
+mostlyclean-libtool:
+	-rm -f *.lo
+
+clean-libtool:
+	-rm -rf .libs _libs
+
+distclean-libtool:
+
+maintainer-clean-libtool:
+
+libpaketto.la: $(libpaketto_la_OBJECTS) $(libpaketto_la_DEPENDENCIES)
+	$(LINK) -rpath $(libdir) $(libpaketto_la_LDFLAGS) $(libpaketto_la_OBJECTS) $(libpaketto_la_LIBADD) $(LIBS)
+
+mostlyclean-binPROGRAMS:
+
+clean-binPROGRAMS:
+	-test -z "$(bin_PROGRAMS)" || rm -f $(bin_PROGRAMS)
+
+distclean-binPROGRAMS:
+
+maintainer-clean-binPROGRAMS:
+
+install-binPROGRAMS: $(bin_PROGRAMS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(bindir)
+	@list='$(bin_PROGRAMS)'; for p in $$list; do \
+	  if test -f $$p; then \
+	    echo " $(LIBTOOL)  --mode=install $(INSTALL_PROGRAM) $$p $(DESTDIR)$(bindir)/`echo $$p|sed 's/$(EXEEXT)$$//'|sed '$(transform)'|sed 's/$$/$(EXEEXT)/'`"; \
+	    $(LIBTOOL)  --mode=install $(INSTALL_PROGRAM) $$p $(DESTDIR)$(bindir)/`echo $$p|sed 's/$(EXEEXT)$$//'|sed '$(transform)'|sed 's/$$/$(EXEEXT)/'`; \
+	  else :; fi; \
+	done
+
+uninstall-binPROGRAMS:
+	@$(NORMAL_UNINSTALL)
+	list='$(bin_PROGRAMS)'; for p in $$list; do \
+	  rm -f $(DESTDIR)$(bindir)/`echo $$p|sed 's/$(EXEEXT)$$//'|sed '$(transform)'|sed 's/$$/$(EXEEXT)/'`; \
+	done
+
+scanrand2$(EXEEXT): $(scanrand2_OBJECTS) $(scanrand2_DEPENDENCIES)
+	@rm -f scanrand2$(EXEEXT)
+	$(LINK) $(scanrand2_LDFLAGS) $(scanrand2_OBJECTS) $(scanrand2_LDADD) $(LIBS)
+
+homer$(EXEEXT): $(homer_OBJECTS) $(homer_DEPENDENCIES)
+	@rm -f homer$(EXEEXT)
+	$(LINK) $(homer_LDFLAGS) $(homer_OBJECTS) $(homer_LDADD) $(LIBS)
+
+donut$(EXEEXT): $(donut_OBJECTS) $(donut_DEPENDENCIES)
+	@rm -f donut$(EXEEXT)
+	$(LINK) $(donut_LDFLAGS) $(donut_OBJECTS) $(donut_LDADD) $(LIBS)
+
+ackmon$(EXEEXT): $(ackmon_OBJECTS) $(ackmon_DEPENDENCIES)
+	@rm -f ackmon$(EXEEXT)
+	$(LINK) $(ackmon_LDFLAGS) $(ackmon_OBJECTS) $(ackmon_LDADD) $(LIBS)
+
+packet2sql$(EXEEXT): $(packet2sql_OBJECTS) $(packet2sql_DEPENDENCIES)
+	@rm -f packet2sql$(EXEEXT)
+	$(LINK) $(packet2sql_LDFLAGS) $(packet2sql_OBJECTS) $(packet2sql_LDADD) $(LIBS)
+
+lc2$(EXEEXT): $(lc2_OBJECTS) $(lc2_DEPENDENCIES)
+	@rm -f lc2$(EXEEXT)
+	$(LINK) $(lc2_LDFLAGS) $(lc2_OBJECTS) $(lc2_LDADD) $(LIBS)
+
+finx$(EXEEXT): $(finx_OBJECTS) $(finx_DEPENDENCIES)
+	@rm -f finx$(EXEEXT)
+	$(LINK) $(finx_LDFLAGS) $(finx_OBJECTS) $(finx_LDADD) $(LIBS)
+
+tincan$(EXEEXT): $(tincan_OBJECTS) $(tincan_DEPENDENCIES)
+	@rm -f tincan$(EXEEXT)
+	$(LINK) $(tincan_LDFLAGS) $(tincan_OBJECTS) $(tincan_LDADD) $(LIBS)
+
+paratrace2$(EXEEXT): $(paratrace2_OBJECTS) $(paratrace2_DEPENDENCIES)
+	@rm -f paratrace2$(EXEEXT)
+	$(LINK) $(paratrace2_LDFLAGS) $(paratrace2_OBJECTS) $(paratrace2_LDADD) $(LIBS)
+
+miname$(EXEEXT): $(miname_OBJECTS) $(miname_DEPENDENCIES)
+	@rm -f miname$(EXEEXT)
+	$(LINK) $(miname_LDFLAGS) $(miname_OBJECTS) $(miname_LDADD) $(LIBS)
+
+prox$(EXEEXT): $(prox_OBJECTS) $(prox_DEPENDENCIES)
+	@rm -f prox$(EXEEXT)
+	$(LINK) $(prox_LDFLAGS) $(prox_OBJECTS) $(prox_LDADD) $(LIBS)
+
+install-includeHEADERS: $(include_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(includedir)
+	@list='$(include_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(includedir)/$$p"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(includedir)/$$p; \
+	done
+
+uninstall-includeHEADERS:
+	@$(NORMAL_UNINSTALL)
+	list='$(include_HEADERS)'; for p in $$list; do \
+	  rm -f $(DESTDIR)$(includedir)/$$p; \
+	done
+
+tags: TAGS
+
+ID: $(HEADERS) $(SOURCES) $(LISP)
+	list='$(SOURCES) $(HEADERS)'; \
+	unique=`for i in $$list; do echo $$i; done | \
+	  awk '    { files[$$0] = 1; } \
+	       END { for (i in files) print i; }'`; \
+	here=`pwd` && cd $(srcdir) \
+	  && mkid -f$$here/ID $$unique $(LISP)
+
+TAGS:  $(HEADERS) $(SOURCES) config.h.in $(TAGS_DEPENDENCIES) $(LISP)
+	tags=; \
+	here=`pwd`; \
+	list='$(SOURCES) $(HEADERS)'; \
+	unique=`for i in $$list; do echo $$i; done | \
+	  awk '    { files[$$0] = 1; } \
+	       END { for (i in files) print i; }'`; \
+	test -z "$(ETAGS_ARGS)config.h.in$$unique$(LISP)$$tags" \
+	  || (cd $(srcdir) && etags $(ETAGS_ARGS) $$tags config.h.in $$unique $(LISP) -o $$here/TAGS)
+
+mostlyclean-tags:
+
+clean-tags:
+
+distclean-tags:
+	-rm -f TAGS ID
+
+maintainer-clean-tags:
+
+distdir = $(top_builddir)/$(PACKAGE)-$(VERSION)/$(subdir)
+
+subdir = src
+
+distdir: $(DISTFILES)
+	@for file in $(DISTFILES); do \
+	  d=$(srcdir); \
+	  if test -d $$d/$$file; then \
+	    cp -pr $$d/$$file $(distdir)/$$file; \
+	  else \
+	    test -f $(distdir)/$$file \
+	    || ln $$d/$$file $(distdir)/$$file 2> /dev/null \
+	    || cp -p $$d/$$file $(distdir)/$$file || :; \
+	  fi; \
+	done
+ackmon.o: ackmon.c libpaketto.h config.h ../libpcap-0.8.1/pcap.h \
+	../libpcap-0.8.1/pcap-bpf.h ../Libnet-1.0.2a/include/libnet.h \
+	../Libnet-1.0.2a/include/libnet/libnet-headers.h \
+	../Libnet-1.0.2a/include/libnet/libnet-structures.h \
+	../Libnet-1.0.2a/include/libnet/libnet-macros.h \
+	../Libnet-1.0.2a/include/libnet/libnet-asn1.h \
+	../Libnet-1.0.2a/include/libnet/libnet-functions.h \
+	../Libnet-1.0.2a/include/libnet/libnet-ospf.h \
+	../libtomcrypt/mycrypt.h ../libtomcrypt/mycrypt_custom.h \
+	../libtomcrypt/mycrypt_cfg.h ../libtomcrypt/mycrypt_macros.h \
+	../libtomcrypt/mycrypt_cipher.h ../libtomcrypt/mycrypt_hash.h \
+	../libtomcrypt/mycrypt_prng.h ../libtomcrypt/mycrypt_pk.h \
+	../libtomcrypt/tommath.h ../libtomcrypt/mycrypt_gf.h \
+	../libtomcrypt/mycrypt_misc.h ../libtomcrypt/mycrypt_kr.h \
+	../libtomcrypt/mycrypt_argchk.h \
+	../libghthash-0.5.2/src/ght_hash_table.h pk_scan.h base64.h
+base64.lo base64.o : base64.c config.h
+donut.o: donut.c libipq.h libpaketto.h config.h ../libpcap-0.8.1/pcap.h \
+	../libpcap-0.8.1/pcap-bpf.h ../Libnet-1.0.2a/include/libnet.h \
+	../Libnet-1.0.2a/include/libnet/libnet-headers.h \
+	../Libnet-1.0.2a/include/libnet/libnet-structures.h \
+	../Libnet-1.0.2a/include/libnet/libnet-macros.h \
+	../Libnet-1.0.2a/include/libnet/libnet-asn1.h \
+	../Libnet-1.0.2a/include/libnet/libnet-functions.h \
+	../Libnet-1.0.2a/include/libnet/libnet-ospf.h \
+	../libtomcrypt/mycrypt.h ../libtomcrypt/mycrypt_custom.h \
+	../libtomcrypt/mycrypt_cfg.h ../libtomcrypt/mycrypt_macros.h \
+	../libtomcrypt/mycrypt_cipher.h ../libtomcrypt/mycrypt_hash.h \
+	../libtomcrypt/mycrypt_prng.h ../libtomcrypt/mycrypt_pk.h \
+	../libtomcrypt/tommath.h ../libtomcrypt/mycrypt_gf.h \
+	../libtomcrypt/mycrypt_misc.h ../libtomcrypt/mycrypt_kr.h \
+	../libtomcrypt/mycrypt_argchk.h \
+	../libghthash-0.5.2/src/ght_hash_table.h pk_scan.h base64.h
+finx.o: finx.c libpaketto.h config.h ../libpcap-0.8.1/pcap.h \
+	../libpcap-0.8.1/pcap-bpf.h ../Libnet-1.0.2a/include/libnet.h \
+	../Libnet-1.0.2a/include/libnet/libnet-headers.h \
+	../Libnet-1.0.2a/include/libnet/libnet-structures.h \
+	../Libnet-1.0.2a/include/libnet/libnet-macros.h \
+	../Libnet-1.0.2a/include/libnet/libnet-asn1.h \
+	../Libnet-1.0.2a/include/libnet/libnet-functions.h \
+	../Libnet-1.0.2a/include/libnet/libnet-ospf.h \
+	../libtomcrypt/mycrypt.h ../libtomcrypt/mycrypt_custom.h \
+	../libtomcrypt/mycrypt_cfg.h ../libtomcrypt/mycrypt_macros.h \
+	../libtomcrypt/mycrypt_cipher.h ../libtomcrypt/mycrypt_hash.h \
+	../libtomcrypt/mycrypt_prng.h ../libtomcrypt/mycrypt_pk.h \
+	../libtomcrypt/tommath.h ../libtomcrypt/mycrypt_gf.h \
+	../libtomcrypt/mycrypt_misc.h ../libtomcrypt/mycrypt_kr.h \
+	../libtomcrypt/mycrypt_argchk.h \
+	../libghthash-0.5.2/src/ght_hash_table.h pk_scan.h base64.h
+homer.o: homer.c libipq.h libpaketto.h config.h ../libpcap-0.8.1/pcap.h \
+	../libpcap-0.8.1/pcap-bpf.h ../Libnet-1.0.2a/include/libnet.h \
+	../Libnet-1.0.2a/include/libnet/libnet-headers.h \
+	../Libnet-1.0.2a/include/libnet/libnet-structures.h \
+	../Libnet-1.0.2a/include/libnet/libnet-macros.h \
+	../Libnet-1.0.2a/include/libnet/libnet-asn1.h \
+	../Libnet-1.0.2a/include/libnet/libnet-functions.h \
+	../Libnet-1.0.2a/include/libnet/libnet-ospf.h \
+	../libtomcrypt/mycrypt.h ../libtomcrypt/mycrypt_custom.h \
+	../libtomcrypt/mycrypt_cfg.h ../libtomcrypt/mycrypt_macros.h \
+	../libtomcrypt/mycrypt_cipher.h ../libtomcrypt/mycrypt_hash.h \
+	../libtomcrypt/mycrypt_prng.h ../libtomcrypt/mycrypt_pk.h \
+	../libtomcrypt/tommath.h ../libtomcrypt/mycrypt_gf.h \
+	../libtomcrypt/mycrypt_misc.h ../libtomcrypt/mycrypt_kr.h \
+	../libtomcrypt/mycrypt_argchk.h \
+	../libghthash-0.5.2/src/ght_hash_table.h pk_scan.h base64.h
+lc2.o: lc2.c libpaketto.h config.h ../libpcap-0.8.1/pcap.h \
+	../libpcap-0.8.1/pcap-bpf.h ../Libnet-1.0.2a/include/libnet.h \
+	../Libnet-1.0.2a/include/libnet/libnet-headers.h \
+	../Libnet-1.0.2a/include/libnet/libnet-structures.h \
+	../Libnet-1.0.2a/include/libnet/libnet-macros.h \
+	../Libnet-1.0.2a/include/libnet/libnet-asn1.h \
+	../Libnet-1.0.2a/include/libnet/libnet-functions.h \
+	../Libnet-1.0.2a/include/libnet/libnet-ospf.h \
+	../libtomcrypt/mycrypt.h ../libtomcrypt/mycrypt_custom.h \
+	../libtomcrypt/mycrypt_cfg.h ../libtomcrypt/mycrypt_macros.h \
+	../libtomcrypt/mycrypt_cipher.h ../libtomcrypt/mycrypt_hash.h \
+	../libtomcrypt/mycrypt_prng.h ../libtomcrypt/mycrypt_pk.h \
+	../libtomcrypt/tommath.h ../libtomcrypt/mycrypt_gf.h \
+	../libtomcrypt/mycrypt_misc.h ../libtomcrypt/mycrypt_kr.h \
+	../libtomcrypt/mycrypt_argchk.h \
+	../libghthash-0.5.2/src/ght_hash_table.h pk_scan.h base64.h
+libpaketto.lo libpaketto.o : libpaketto.c libpaketto.h config.h \
+	../libpcap-0.8.1/pcap.h ../libpcap-0.8.1/pcap-bpf.h \
+	../Libnet-1.0.2a/include/libnet.h \
+	../Libnet-1.0.2a/include/libnet/libnet-headers.h \
+	../Libnet-1.0.2a/include/libnet/libnet-structures.h \
+	../Libnet-1.0.2a/include/libnet/libnet-macros.h \
+	../Libnet-1.0.2a/include/libnet/libnet-asn1.h \
+	../Libnet-1.0.2a/include/libnet/libnet-functions.h \
+	../Libnet-1.0.2a/include/libnet/libnet-ospf.h \
+	../libtomcrypt/mycrypt.h ../libtomcrypt/mycrypt_custom.h \
+	../libtomcrypt/mycrypt_cfg.h ../libtomcrypt/mycrypt_macros.h \
+	../libtomcrypt/mycrypt_cipher.h ../libtomcrypt/mycrypt_hash.h \
+	../libtomcrypt/mycrypt_prng.h ../libtomcrypt/mycrypt_pk.h \
+	../libtomcrypt/tommath.h ../libtomcrypt/mycrypt_gf.h \
+	../libtomcrypt/mycrypt_misc.h ../libtomcrypt/mycrypt_kr.h \
+	../libtomcrypt/mycrypt_argchk.h \
+	../libghthash-0.5.2/src/ght_hash_table.h pk_scan.h base64.h
+miname.o: miname.c libpaketto.h config.h ../libpcap-0.8.1/pcap.h \
+	../libpcap-0.8.1/pcap-bpf.h ../Libnet-1.0.2a/include/libnet.h \
+	../Libnet-1.0.2a/include/libnet/libnet-headers.h \
+	../Libnet-1.0.2a/include/libnet/libnet-structures.h \
+	../Libnet-1.0.2a/include/libnet/libnet-macros.h \
+	../Libnet-1.0.2a/include/libnet/libnet-asn1.h \
+	../Libnet-1.0.2a/include/libnet/libnet-functions.h \
+	../Libnet-1.0.2a/include/libnet/libnet-ospf.h \
+	../libtomcrypt/mycrypt.h ../libtomcrypt/mycrypt_custom.h \
+	../libtomcrypt/mycrypt_cfg.h ../libtomcrypt/mycrypt_macros.h \
+	../libtomcrypt/mycrypt_cipher.h ../libtomcrypt/mycrypt_hash.h \
+	../libtomcrypt/mycrypt_prng.h ../libtomcrypt/mycrypt_pk.h \
+	../libtomcrypt/tommath.h ../libtomcrypt/mycrypt_gf.h \
+	../libtomcrypt/mycrypt_misc.h ../libtomcrypt/mycrypt_kr.h \
+	../libtomcrypt/mycrypt_argchk.h \
+	../libghthash-0.5.2/src/ght_hash_table.h pk_scan.h base64.h
+packet2sql.o: packet2sql.c libpaketto.h config.h ../libpcap-0.8.1/pcap.h \
+	../libpcap-0.8.1/pcap-bpf.h ../Libnet-1.0.2a/include/libnet.h \
+	../Libnet-1.0.2a/include/libnet/libnet-headers.h \
+	../Libnet-1.0.2a/include/libnet/libnet-structures.h \
+	../Libnet-1.0.2a/include/libnet/libnet-macros.h \
+	../Libnet-1.0.2a/include/libnet/libnet-asn1.h \
+	../Libnet-1.0.2a/include/libnet/libnet-functions.h \
+	../Libnet-1.0.2a/include/libnet/libnet-ospf.h \
+	../libtomcrypt/mycrypt.h ../libtomcrypt/mycrypt_custom.h \
+	../libtomcrypt/mycrypt_cfg.h ../libtomcrypt/mycrypt_macros.h \
+	../libtomcrypt/mycrypt_cipher.h ../libtomcrypt/mycrypt_hash.h \
+	../libtomcrypt/mycrypt_prng.h ../libtomcrypt/mycrypt_pk.h \
+	../libtomcrypt/tommath.h ../libtomcrypt/mycrypt_gf.h \
+	../libtomcrypt/mycrypt_misc.h ../libtomcrypt/mycrypt_kr.h \
+	../libtomcrypt/mycrypt_argchk.h \
+	../libghthash-0.5.2/src/ght_hash_table.h pk_scan.h base64.h
+paratrace2.o: paratrace2.c libpaketto.h config.h ../libpcap-0.8.1/pcap.h \
+	../libpcap-0.8.1/pcap-bpf.h ../Libnet-1.0.2a/include/libnet.h \
+	../Libnet-1.0.2a/include/libnet/libnet-headers.h \
+	../Libnet-1.0.2a/include/libnet/libnet-structures.h \
+	../Libnet-1.0.2a/include/libnet/libnet-macros.h \
+	../Libnet-1.0.2a/include/libnet/libnet-asn1.h \
+	../Libnet-1.0.2a/include/libnet/libnet-functions.h \
+	../Libnet-1.0.2a/include/libnet/libnet-ospf.h \
+	../libtomcrypt/mycrypt.h ../libtomcrypt/mycrypt_custom.h \
+	../libtomcrypt/mycrypt_cfg.h ../libtomcrypt/mycrypt_macros.h \
+	../libtomcrypt/mycrypt_cipher.h ../libtomcrypt/mycrypt_hash.h \
+	../libtomcrypt/mycrypt_prng.h ../libtomcrypt/mycrypt_pk.h \
+	../libtomcrypt/tommath.h ../libtomcrypt/mycrypt_gf.h \
+	../libtomcrypt/mycrypt_misc.h ../libtomcrypt/mycrypt_kr.h \
+	../libtomcrypt/mycrypt_argchk.h \
+	../libghthash-0.5.2/src/ght_hash_table.h pk_scan.h base64.h
+pk_scan.lo pk_scan.o : pk_scan.c libpaketto.h config.h \
+	../libpcap-0.8.1/pcap.h ../libpcap-0.8.1/pcap-bpf.h \
+	../Libnet-1.0.2a/include/libnet.h \
+	../Libnet-1.0.2a/include/libnet/libnet-headers.h \
+	../Libnet-1.0.2a/include/libnet/libnet-structures.h \
+	../Libnet-1.0.2a/include/libnet/libnet-macros.h \
+	../Libnet-1.0.2a/include/libnet/libnet-asn1.h \
+	../Libnet-1.0.2a/include/libnet/libnet-functions.h \
+	../Libnet-1.0.2a/include/libnet/libnet-ospf.h \
+	../libtomcrypt/mycrypt.h ../libtomcrypt/mycrypt_custom.h \
+	../libtomcrypt/mycrypt_cfg.h ../libtomcrypt/mycrypt_macros.h \
+	../libtomcrypt/mycrypt_cipher.h ../libtomcrypt/mycrypt_hash.h \
+	../libtomcrypt/mycrypt_prng.h ../libtomcrypt/mycrypt_pk.h \
+	../libtomcrypt/tommath.h ../libtomcrypt/mycrypt_gf.h \
+	../libtomcrypt/mycrypt_misc.h ../libtomcrypt/mycrypt_kr.h \
+	../libtomcrypt/mycrypt_argchk.h \
+	../libghthash-0.5.2/src/ght_hash_table.h pk_scan.h base64.h \
+	pk_serv.h
+prox.o: prox.c libpaketto.h config.h ../libpcap-0.8.1/pcap.h \
+	../libpcap-0.8.1/pcap-bpf.h ../Libnet-1.0.2a/include/libnet.h \
+	../Libnet-1.0.2a/include/libnet/libnet-headers.h \
+	../Libnet-1.0.2a/include/libnet/libnet-structures.h \
+	../Libnet-1.0.2a/include/libnet/libnet-macros.h \
+	../Libnet-1.0.2a/include/libnet/libnet-asn1.h \
+	../Libnet-1.0.2a/include/libnet/libnet-functions.h \
+	../Libnet-1.0.2a/include/libnet/libnet-ospf.h \
+	../libtomcrypt/mycrypt.h ../libtomcrypt/mycrypt_custom.h \
+	../libtomcrypt/mycrypt_cfg.h ../libtomcrypt/mycrypt_macros.h \
+	../libtomcrypt/mycrypt_cipher.h ../libtomcrypt/mycrypt_hash.h \
+	../libtomcrypt/mycrypt_prng.h ../libtomcrypt/mycrypt_pk.h \
+	../libtomcrypt/tommath.h ../libtomcrypt/mycrypt_gf.h \
+	../libtomcrypt/mycrypt_misc.h ../libtomcrypt/mycrypt_kr.h \
+	../libtomcrypt/mycrypt_argchk.h \
+	../libghthash-0.5.2/src/ght_hash_table.h pk_scan.h base64.h
+scanrand2.o: scanrand2.c libpaketto.h config.h ../libpcap-0.8.1/pcap.h \
+	../libpcap-0.8.1/pcap-bpf.h ../Libnet-1.0.2a/include/libnet.h \
+	../Libnet-1.0.2a/include/libnet/libnet-headers.h \
+	../Libnet-1.0.2a/include/libnet/libnet-structures.h \
+	../Libnet-1.0.2a/include/libnet/libnet-macros.h \
+	../Libnet-1.0.2a/include/libnet/libnet-asn1.h \
+	../Libnet-1.0.2a/include/libnet/libnet-functions.h \
+	../Libnet-1.0.2a/include/libnet/libnet-ospf.h \
+	../libtomcrypt/mycrypt.h ../libtomcrypt/mycrypt_custom.h \
+	../libtomcrypt/mycrypt_cfg.h ../libtomcrypt/mycrypt_macros.h \
+	../libtomcrypt/mycrypt_cipher.h ../libtomcrypt/mycrypt_hash.h \
+	../libtomcrypt/mycrypt_prng.h ../libtomcrypt/mycrypt_pk.h \
+	../libtomcrypt/tommath.h ../libtomcrypt/mycrypt_gf.h \
+	../libtomcrypt/mycrypt_misc.h ../libtomcrypt/mycrypt_kr.h \
+	../libtomcrypt/mycrypt_argchk.h \
+	../libghthash-0.5.2/src/ght_hash_table.h pk_scan.h base64.h
+tincan.o: tincan.c libpaketto.h config.h ../libpcap-0.8.1/pcap.h \
+	../libpcap-0.8.1/pcap-bpf.h ../Libnet-1.0.2a/include/libnet.h \
+	../Libnet-1.0.2a/include/libnet/libnet-headers.h \
+	../Libnet-1.0.2a/include/libnet/libnet-structures.h \
+	../Libnet-1.0.2a/include/libnet/libnet-macros.h \
+	../Libnet-1.0.2a/include/libnet/libnet-asn1.h \
+	../Libnet-1.0.2a/include/libnet/libnet-functions.h \
+	../Libnet-1.0.2a/include/libnet/libnet-ospf.h \
+	../libtomcrypt/mycrypt.h ../libtomcrypt/mycrypt_custom.h \
+	../libtomcrypt/mycrypt_cfg.h ../libtomcrypt/mycrypt_macros.h \
+	../libtomcrypt/mycrypt_cipher.h ../libtomcrypt/mycrypt_hash.h \
+	../libtomcrypt/mycrypt_prng.h ../libtomcrypt/mycrypt_pk.h \
+	../libtomcrypt/tommath.h ../libtomcrypt/mycrypt_gf.h \
+	../libtomcrypt/mycrypt_misc.h ../libtomcrypt/mycrypt_kr.h \
+	../libtomcrypt/mycrypt_argchk.h \
+	../libghthash-0.5.2/src/ght_hash_table.h pk_scan.h base64.h \
+	g711.h
+
+info-am:
+info: info-am
+dvi-am:
+dvi: dvi-am
+check-am: all-am
+check: check-am
+installcheck-am:
+installcheck: installcheck-am
+all-recursive-am: config.h
+	$(MAKE) $(AM_MAKEFLAGS) all-recursive
+
+install-exec-am: install-libLTLIBRARIES install-binPROGRAMS
+install-exec: install-exec-am
+
+install-data-am: install-includeHEADERS
+install-data: install-data-am
+
+install-am: all-am
+	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
+install: install-am
+uninstall-am: uninstall-libLTLIBRARIES uninstall-binPROGRAMS \
+		uninstall-includeHEADERS
+uninstall: uninstall-am
+all-am: Makefile $(LTLIBRARIES) $(PROGRAMS) $(HEADERS) config.h
+all-redirect: all-am
+install-strip:
+	$(MAKE) $(AM_MAKEFLAGS) AM_INSTALL_PROGRAM_FLAGS=-s install
+installdirs:
+	$(mkinstalldirs)  $(DESTDIR)$(libdir) $(DESTDIR)$(bindir) \
+		$(DESTDIR)$(includedir)
+
+
+mostlyclean-generic:
+
+clean-generic:
+
+distclean-generic:
+	-rm -f Makefile $(CONFIG_CLEAN_FILES)
+	-rm -f config.cache config.log stamp-h stamp-h[0-9]*
+
+maintainer-clean-generic:
+mostlyclean-am:  mostlyclean-hdr mostlyclean-libLTLIBRARIES \
+		mostlyclean-compile mostlyclean-libtool \
+		mostlyclean-binPROGRAMS mostlyclean-tags \
+		mostlyclean-generic
+
+mostlyclean: mostlyclean-am
+
+clean-am:  clean-hdr clean-libLTLIBRARIES clean-compile clean-libtool \
+		clean-binPROGRAMS clean-tags clean-generic \
+		mostlyclean-am
+
+clean: clean-am
+
+distclean-am:  distclean-hdr distclean-libLTLIBRARIES distclean-compile \
+		distclean-libtool distclean-binPROGRAMS distclean-tags \
+		distclean-generic clean-am
+	-rm -f libtool
+
+distclean: distclean-am
+
+maintainer-clean-am:  maintainer-clean-hdr \
+		maintainer-clean-libLTLIBRARIES \
+		maintainer-clean-compile maintainer-clean-libtool \
+		maintainer-clean-binPROGRAMS maintainer-clean-tags \
+		maintainer-clean-generic distclean-am
+	@echo "This command is intended for maintainers to use;"
+	@echo "it deletes files that may require special tools to rebuild."
+
+maintainer-clean: maintainer-clean-am
+
+.PHONY: mostlyclean-hdr distclean-hdr clean-hdr maintainer-clean-hdr \
+mostlyclean-libLTLIBRARIES distclean-libLTLIBRARIES \
+clean-libLTLIBRARIES maintainer-clean-libLTLIBRARIES \
+uninstall-libLTLIBRARIES install-libLTLIBRARIES mostlyclean-compile \
+distclean-compile clean-compile maintainer-clean-compile \
+mostlyclean-libtool distclean-libtool clean-libtool \
+maintainer-clean-libtool mostlyclean-binPROGRAMS distclean-binPROGRAMS \
+clean-binPROGRAMS maintainer-clean-binPROGRAMS uninstall-binPROGRAMS \
+install-binPROGRAMS uninstall-includeHEADERS install-includeHEADERS \
+tags mostlyclean-tags distclean-tags clean-tags maintainer-clean-tags \
+distdir info-am info dvi-am dvi check check-am installcheck-am \
+installcheck all-recursive-am install-exec-am install-exec \
+install-data-am install-data install-am install uninstall-am uninstall \
+all-redirect all-am all installdirs mostlyclean-generic \
+distclean-generic clean-generic maintainer-clean-generic clean \
+mostlyclean distclean maintainer-clean
+
+
+#man_MANS = lc.1 paratrace.1 phentropy.1 scanrand.1
+
+# Tell versions [3.59,3.63) of GNU make to not export all variables.
+# Otherwise a system limit (for SysV at least) may be exceeded.
+.NOEXPORT:

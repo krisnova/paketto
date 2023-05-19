@@ -1,0 +1,21 @@
+1.1
+1) Finish per-packet latency logging -- only 16 bit reflection per packet required
+2) Win32 Win32 Win32
+3) Viz for scanrand
+4) Source port "weaving"
+5) Release Phentropy vids, examples
+6) OSX OSX OSX (where's a fink build of Libnet 1.0?)
+
+===
+1.0
+
+1) Working on many, more platforms.  Send me patches!
+   libnet/libpcap for cygwin would be most appreciated.
+2) Implementations of NAT2NAT as per the Black Ops talk.
+   The road between design and implementation is long.
+   Turns out there's a setsockopt for changing the TTL after all!
+3) Implementation of Layer 3 Flooding for minewt ("The PIZZA Protocol").
+4) A proper demonstration of Guerilla Multicast.
+5) dechepe
+6) Much, much more :-)
+

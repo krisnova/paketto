@@ -1,0 +1,100 @@
+Package:    Paketto Keiretsu 1.0
+License:    BSD
+Date:       12-Nov-2002
+Author:     Dan Kaminsky, DoxPara Research
+Email:      dan@doxpara.com
+Web:        http://www.doxpara.com
+Sky:        Blue
+===================================
+
+FOREWARD
+
+Welcome to the Paketto Keiretsu, version 1.0.  Enclosed, please find
+implementations of much of what I discussed at the Black Hat Briefings
+2002 (USA and Asia), as well as Defcon X.  Full documentation will be
+released in an upcoming research paper, which will be written based
+upon the feedback received from this 1.0 release.  In the meantime,
+the slides for "Black Ops of TCP/IP" have been made available along
+with this code.
+
+CONTENTS (ripped from the man pages, if not from the headlines)
+
+   scanrand
+       Scanrand  is  a  proof of concept, investigating stateless
+       manipulation of the TCP Finite State Machine.   It  imple­
+       ments extremely fast and efficient port, host, and network
+       trace scanning, and does so with two  completely  separate
+       and  disconnected processes -- one that sends queries, the
+       other that receives responses and reconstructs the  origi­
+       nal  message from the returned content.  Security is main­
+       tained, in the sense that false results are  difficult  to
+       forge,  by  embeddeding  a  cryptographic signature in the
+       outgoing requests which must be detected in  any  received
+       response.   HMAC-SHA1,  truncated  to 32 bits, is used for
+       this "Inverse SYN Cookie".
+
+   minewt
+       Minewt is a minimal "testbed" implementation of a stateful
+       address  translation  gateway,  rendered  so  entirely  in
+       userspace that not even  the  hardware  addresses  of  the
+       gateway   correspond  to  what  the  kernel  is  operating
+       against.  Minewt implements what is common referred to  as
+       NAT,  as  well  as  a Doxpara-developed technique known as
+       MAT.  MAT, or  MAC  Address  Translation,  allows  several
+       backend  hosts  to  share the same IP address, by dropping
+       the static ARP cache and merging Layer 2 information  into
+       the  NAT  state table.  Minewt's ability to manipulate MAC
+       addresses also allows it to  demonstrate  Guerilla  Multi­
+       cast,  which  allows  multiple hosts on the same subnet to
+       receive a unicasted TCP/UDP datastream  from  the  outside
+       world.   Minewt  is  not  a  firewall,  and  should not be
+       treated as such.
+
+   lc
+       Linkcat(lc) attempts to do to Layer 2 (Ethernet) what Net­
+       cat(nc) does  for  Layer  4-7(TCP/UDP):   Provide  direct,
+       bidirectional,  streaming  access  to  the  network.  Lib­
+       cap/tcpdump syntax filters  may  be  specified  in  either
+       direction,  but  no  filtering is enabled by default.  Two
+       separate syntaxes are supported;  one  accepts  and  emits
+       libpcap dump format(raw binary w/ a fixed size file header
+       and a fixed size packet header),  the  other  accepts  and
+       emits  simple hex w/ backslash line continuation.  Several
+       other features are also implemented;  specifically,  early
+       work  involving  the  embedding  of  cryptographic shared-
+       secret signatures in the Ethernet Trailer is demonstrated.
+
+   phentropy
+       Phentropy plots an arbitrarily large data source (of arbi­
+       trary  data)  onto  a three dimensional volumetric matrix,
+       which may then be parsed by  OpenQVIS.   Data  mapping  is
+       accomplished by interpreting the file as a one dimensional
+       stream of integers  and  progressively  mapping  quads  in
+       phase  space.  This process is reasonably straightforward:
+       Take four numbers.  Make X  equal  to  the  second  number
+       minus  the first number.  Make Y equal to the third number
+       minus the second number.  Then make Z equal  to  the  last
+       number  minus the third number.  Given the XYZ coordinate,
+       draw a point.  It turns out  that  many,  many  non-random
+       datasets  will  have  extraordinarily  apparent regions in
+       3-space with increased density, reflecting common rates of
+       change  of  the  apparently random dataset.  These regions
+       are referred to as Strange Attractors, and can be used  to
+       predict future values from an otherwise random system.
+
+   paratrace
+       Paratrace traces the path between a client and  a  server,
+       much  like  "traceroute",  but  with a major twist: Rather
+       than iterate the TTLs of UDP, ICMP, or even TCP SYN  pack­
+       ets,  paratrace  attaches itself to an existing, stateful-
+       firewall-approved TCP flow, statelessly releasing as  many
+       TCP  Keepalive  messages  as  the  software  estimates the
+       remote host  is  hop-distant.   The  resultant  ICMP  Time
+       Exceeded  replies  are  analyzed, with their original hop­
+       count  "tattooed"  in  the  IPID  field  copied  into  the
+       returned packets by so many helpful routers.  Through this
+       process, paratrace can trace a route without modulating  a
+       single  byte of TCP/Layer 4, and thus delivers fully valid
+       (if occasionally redundant) segments at Layer  4  --  seg­
+       ments generated by another process entirely.
+

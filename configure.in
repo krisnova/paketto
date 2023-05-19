@@ -1,0 +1,20 @@
+dnl Copyright (C) 2002 Doxpara
+dnl Licensed under the BSD license.
+
+AC_INIT(src/libpaketto.c)
+# This is required because libtool wants an absolute path for some stuff
+# we do later, and by default configure defines srcdir based on the value
+# of $0.  And guess what $0 looks like when you type "./configure"...
+srcdir="$PWD"
+VERSION="2.00pre5"
+AC_CONFIG_AUX_DIR(config)
+AM_INIT_AUTOMAKE(paketto,[$VERSION])
+AM_PROG_LIBTOOL
+AM_CONFIG_HEADER(src/config.h)
+DXP_LIBNET
+DXP_PCAP
+DXP_TC
+DXP_IOCCOM
+DXP_GHT
+
+AC_OUTPUT(Makefile src/Makefile config/Makefile m4/Makefile)

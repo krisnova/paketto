@@ -1,0 +1,32 @@
+#!/bin/sh
+
+libtoolize --copy --force
+ACLOCALDIRS="-I m4"
+#if [ -d ~/share/aclocal ] ; then
+#    ACLOCALDIRS="$ACLOCALDIRS -I ~/share/aclocal"
+#elif [ -d /usr/local/share/aclocal ] ; then
+#    ACLOCALDIRS="$ACLOCALDIRS -I /usr/local/share/aclocal"
+#fi
+aclocal $ACLOCALDIRS
+autoheader
+automake --add-missing --copy
+rc_autoconf=none
+if [ -x "`which autoconf`" ]; then
+	rc_autoconf=autoconf
+fi
+
+if [ -x "`which autoconf213`" ]; then
+	rc_autoconf=autoconf213
+fi
+
+if [ -x "`which autoconf-2.13`" ]; then
+	rc_autoconf=autoconf-2.13
+fi
+
+if [ "$rc_autoconf" = none ]; then
+	echo "No autoconf found!  Bailing out..."
+	exit 1
+fi
+
+"$rc_autoconf"
+rm -f config.cache

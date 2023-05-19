@@ -1,0 +1,55 @@
+[root@localhost src]# ./minewt
+You must specify an internal IP(-i) to accept packets for translation.
+You must specify an external IP(-I) to send translated packets from.
+You must specify the gateway IP(-r) or MAC[-R] to send translated packets to.
+
+  minewt 1.0:   Userspace NAT/MAT Gateway
+Component of:   Paketto Keiretsu 1.0;    Dan Kaminsky  (dan@doxpara.com)
+
+  Min. Usage:   minewt -i internal_ip -I external_ip -r gateway_ip
+     Options:   -d/-D [device]: Internal/External Device
+                -m/-M [MAC]   : Internal/External MAC Address
+                -a/-A [MAC]   : Internal/External MAC Address (ARP Packets Only)
+                -i/-I [IP]    : Internal/External IP Address
+                -r/-R [IP/MAC]: Upstream Router's IP / MAC Address
+                -t   [timeout]: Maximum silence before connection state dropped
+                -v            : Increase Verbosity
+                -l            : Forward incoming connections to this IP
+                -g/-G         : Disable Internal/External Gratuitous ARP
+  Experiments:  -s/-S         : Embed state in IP Timestamps(Mode 3/Mode 4)
+                -F            : Set split-on-fragment for IP Timestamps
+                [MAC] = R     : Set MAC to Random    (00:??:??:??:??:??)
+                [MAC] = B     : Set MAC to Broadcast (FF:FF:FF:FF:FF:FF)
+                [MAC] = M     : Set MAC to Multicast (01:00:5E:11:22:33)
+                [MAC] = MR    : Set Random Multicast (01:00:5E:??:??:??)
+        Notes:   nCast MACs attached to External and/or External ARP using
+                 -MMR/-AMR/-MB *may* spawn basic Guerilla Multicast traffic.
+                 Simply ARPing with an otherwise silent MAC address may
+                 also work.
+su-2.05a# ./minewt -i 10.0.1.180 -I 10.0.1.190 -r 10.0.1.254 -v
+GRAT ARP (Internal): Wrote 42 bytes to fxp0 announcing 10.0.1.180
+GRAT ARP (External): Wrote 42 bytes to fxp0 announcing 10.0.1.190
+ROUTER ARP REQUEST: Wrote 42 bytes to fxp0 looking for 10.0.1.254
+Router Found: 10.0.1.254 at 0:3:E3:0:4E:6B
+ARP: Wrote 60 bytes to internal interface
+Adding to state
+TCP/UDP Init (Internal -> External): Wrote 60 bytes
+TCP/UDP Incoming(External->Internal): Wrote 60 bytes
+Adding to state
+TCP/UDP Init (Internal -> External): Wrote 86 bytes
+TCP/UDP Incoming(External->Internal): Wrote 86 bytes
+TCP/UDP Init (Internal -> External): Wrote 60 bytes
+TCP/UDP Init (Internal -> External): Wrote 60 bytes
+TCP/UDP Init (Internal -> External): Wrote 60 bytes
+TCP/UDP Init (Internal -> External): Wrote 60 bytes
+Adding to state
+TCP/UDP Init (Internal -> External): Wrote 74 bytes
+TCP/UDP Incoming(External->Internal): Wrote 74 bytes
+TCP/UDP Init (Internal -> External): Wrote 66 bytes
+TCP/UDP Init (Internal -> External): Wrote 614 bytes
+TCP/UDP Incoming(External->Internal): Wrote 1434 bytes
+...
+[ping received to internal interface]
+000)       10.0.1.53:36535 ->   205.188.9.118:5190  , Proto 6, Timeout 347
+001)       10.0.1.53:39624 ->   209.81.42.254:80    , Proto 6, Timeout 27
+002)       10.0.1.53:39625 ->   209.81.42.254:80    , Proto 6, Timeout 27

@@ -1,0 +1,34 @@
+bash-2.05a# paratrace
+Paratrace requires a target to attempt a trace against.
+paratrace 1.0:  Parasitic Traceroute via Established TCP Flows & IPID Hopcount
+Component of:   Paketto Keiretsu 1.0;    Dan Kaminsky  (dan@doxpara.com)
+
+     Example:  paratrace -b100k www.doxpara.com
+     Example:  paratrace -t0 -n 10.0.1.0/24
+     Options:  -s  [hopfuzz]: Fuzz hopcount estimation for TTL scan        (+4)
+               -t  [timeout]: Wait n full seconds for the last response   (60s)
+               -b[bandwidth]: Limit bandwidth consumption to n b/k/m/g bytes(0)
+                              (0 supresses timeouts; maximizes bw utilization)
+               -n           : Specify network instead of host to respond to
+               -N/-NN       : Enable name resolution (Prefer Source/Dest)
+               -v           : Mark packets being sent, as well as received
+               -vv          : Output full packet traces to stderr
+  Addressing:  -d   [device]: Send requests from this L2 hardware device
+               -i   [source]: Send requests from this L3 IP address
+bash-2.05a# paratrace -b1m www.slashdot.org
+Waiting to detect attachable TCP connection to host/net: www.slashdot.org
+66.35.250.150:80/32 1-16
+002 =    63.251.53.219|80    [02]   5.170s(       10.0.1.11 -> 66.35.250.150   )
+001 =       64.81.64.1|80    [01]   5.171s(       10.0.1.11 -> 66.35.250.150   )
+003 =     63.251.63.14|80    [03]   5.195s(       10.0.1.11 -> 66.35.250.150   )
+  UP:    66.35.250.150:80    [12]   5.208s
+004 =    63.211.143.17|80    [04]   5.219s(       10.0.1.11 -> 66.35.250.150   )
+005 =   209.244.14.193|80    [05]   5.235s(       10.0.1.11 -> 66.35.250.150   )
+006 =  208.172.147.201|80    [08]   5.273s(       10.0.1.11 -> 66.35.250.150   )
+007 =  208.172.146.104|80    [06]   5.277s(       10.0.1.11 -> 66.35.250.150   )
+008 =  208.172.156.157|80    [08]   5.314s(       10.0.1.11 -> 66.35.250.150   )
+009 =  208.172.156.198|80    [08]   5.315s(       10.0.1.11 -> 66.35.250.150   )
+010 =    66.35.194.196|80    [09]   5.337s(       10.0.1.11 -> 66.35.250.150   )
+011 =     66.35.194.58|80    [09]   5.356s(       10.0.1.11 -> 66.35.250.150   )
+012 =    66.35.212.174|80    [10]   5.379s(       10.0.1.11 -> 66.35.250.150   )
+

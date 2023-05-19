@@ -1,0 +1,455 @@
+    sarnold  greetings everyone; this is the last presentation of the day for 
+             the opening day of UMeet 2002                                    
+    sarnold  and, wrapping up the presentations is dan kaminsky; he spent two 
+             years as a security engineer for cisco                           
+    sarnold  he is here today to present some networking tools called paketto 
+             keiretsu                                                         
+    sarnold  so please welcome dan :)                                         
+   DanKamin  Hello everyone :-)                                               
+   DanKamin  As Seth mentioned, I recently released a package of tools I'm    
+             calling the Paketto Keiretsu                                     
+   DanKamin  If you're looking for them, they can be found at this            
+             URL:  http://www.doxpara.com/paketto/paketto-1.0.tar.gz          
+   DanKamin  Though 1.01 should be out as soon as I fix an annoying build     
+             screwup :-)                                                      
+   DanKamin  Essentially, I've been researching the following question:       
+             If I take direct control of the network -- fabricate my own      
+   DanKamin  packets, build my own stacks with no particular respect for the  
+             original meaning of data fields...                               
+   DanKamin  what could I do?                                                 
+   DanKamin  Crashing machines isn't particularly interesting to me           
+   DanKamin  But there's lots of interesting functionality that networks      
+             can't provide                                                    
+   DanKamin  Yet :-)                                                          
+             Well, I didn't succeed in everything I set out to accomplish     
+   DanKamin  (for example, there's still no good way to quickly scan for open 
+             UDP ports), *but* I did find quite a bit of untapped potential   
+             within existing TCP/IP networks                                  
+   DanKamin  and that's what we're going to talk about today.                 
+   DanKamin  Probably the most useful component of the Keiretsu is scanrand.  
+   DanKamin  scanrand is a stateless TCP scanner with the secondary           
+             capability to discover routes as well as endpoints               
+             It can very quickly iterate across hosts, ports, and hops to     
+   DanKamin  provide a detailed view of available services and routes on a    
+             network                                                          
+   DanKamin  Because of its stateless infrastructure, "Very Quickly" takes on 
+             a bit of a new meaning                                           
+   DanKamin  During testing, scanrand was configured to examine the class B   
+             network of a major multinational corporation                     
+   DanKamin  This was done with their full consent, of course :-)             
+   DanKamin  65K hosts received a probe against their HTTP port               
+   DanKamin  8300 hosts responded affirmatively; many more responded          
+             negatively                                                       
+   DanKamin  This scan took approximately four seconds to complete.           
+             The architecture of scanrand is actually quite simple.  Upon     
+             instantiation, the app splits into two halves:  One that sends a 
+   DanKamin  massive number of connection initations, or "SYNs"; another that 
+             receives those SYNs and parses out who claims to be up and who   
+             claims to be down.                                               
+   DanKamin  There is no inter-process communication between these processes  
+   DanKamin  Rather, everything that needs to be known about a scan request   
+             is parsed from the endpoint-provided scan reply.                 
+             This means that one machine can efficiently scan 65K endpoints,  
+   DanKamin  or even many, many more, without having to keep a progressively  
+             larger amount of memory occupied for the eventual responses that 
+             may or may not come                                              
+             such is the reason why previous attempts at very fast scanning   
+   DanKamin  -- even parallelized with sockets -- have topped out at 100      
+             scans a second or so                                             
+             Now, one problem with a stateless approach is that if we're not  
+   DanKamin  keeping track of who we communicate with, somebody could notice  
+             "Heh, this guy is scanning us without any care for who he's      
+             scanning...lets send back fake replies"                          
+    viZard   dan, can you wait a sec please? :)                               
+   DanKamin  viZard sure :-)                                                  
+    viZard   ok, thanks. keep going                                           
+   * DanKamin has never had live translation during a talk :-)
+   DanKamin  Thank you, viZard!                                               
+    sarnold  (and garoeda, providing translations in #taee as well... dutch,  
+             I believe. :)                                                    
+   DanKamin  Thank you too, garoeda :-)                                       
+             Now, this is a mere annoyance at best, but depending on what     
+   DanKamin  might get built using scanrand (particularly with database       
+             backends), this could be the channel for a serious security hole 
+   DanKamin  I come from a security background (I've done quite a bit of work 
+             with OpenSSH), so this is unacceptable :-)                       
+   DanKamin  So the solution is to use what I refer to as Inverse SYN Cookies 
+             In TCP, When you send a SYN to request a connection, you receive 
+             either a SYN|ACK(the port is up) or a RST|ACK(the port is up) or 
+             a RST|ACK(the port is down) Both SYN|ACKs and RST|ACKs have lots 
+   DanKamin  more to them than just "Up" or "Down"...among other things, they 
+             contain all the addressing information we needed to be able to   
+             statelessly determine who we sent a request to and what port we  
+             were looking at                                                  
+   DanKamin  But also                                                         
+   DanKamin  They contain a 32 bit number of our own choosing from the SEQ#   
+   DanKamin  er                                                               
+   DanKamin  from the SYN                                                     
+   DanKamin  this number is known as the Sequence Number, or SEQ#             
+   DanKamin  and it is *reflected* in the Acknowledgement Number, or ACK#, of 
+             any valid SYN|ACK or RST|ACK                                     
+   DanKamin  32 bits is enough to include a cryptographically strong variable 
+             that links a given response to a valid scan                      
+             In technical terms, we use SHA-1 in the HMAC, or Hashed Message  
+   DanKamin  Authentication Code, construction to create a 160 bit value      
+             corresponding to the combination of (source IP, source port,     
+             destination IP, destination port)                                
+   DanKamin  Then the first 32 bits are chopped off and thrown into the SEQ#  
+             when the SYN|ACK or RST|ACK returns, we reverse the process(and  
+   DanKamin  decrement the ACK# by one, because the reflection is             
+             incremented) to see if this host actually received a scan from   
+             us                                                               
+   DanKamin  HMAC involves a secret value known only to the scanner           
+             so this leaves a host with a choice -- reply with the valid      
+   DanKamin  information, or do not reply -- because anything invalid can be  
+             easily ignored.                                                  
+   DanKamin  http://www.doxpara.com/read.php/docs/scanrand_logs.html          
+   DanKamin  Here you will find logs of Scanrand being used                   
+             As you can see in the local scan -- 254*20 ports are scanned on  
+   DanKamin  my local 100mbit LAN, and results are collated within 0.182      
+             seconds                                                          
+   DanKamin  Of note is the capacity to do passive hopcount estimation        
+   DanKamin  this is a simple technique, but it's surprisingly successful     
+   DanKamin  Simply assume remote hosts started sending packets at some value 
+             modulo 32 -- 64, 128, 255(close enough)                          
+   DanKamin  then whatever difference you get from that value, that's the     
+             number of hops the packet took to get to you                     
+   DanKamin  so when I scan Slashdot, it appears to be about 12 hops away     
+   DanKamin  well, lets verify that -- but of course, it's me, so lets verify 
+             it statelessly :-)                                               
+   DanKamin  Scanrand's stateless traceroute takes advantage of a heretofore  
+             ignored fact                                                     
+   DanKamin  ICMP errors contain more than just "something screwed up"        
+   DanKamin  They also contain a full copy of the offending IP header and the 
+             first 8 bytes of the Layer 4 data contained inside               
+   DanKamin  TCP/UDP/ICMP                                                     
+   DanKamin  So, traceroute works as follows:                                 
+   DanKamin  There exists in IP a value called the TTL                        
+   DanKamin  This stands for Time To Live                                     
+   DanKamin  TTL is SUPPOSED to refer to seconds, but its evolved to become   
+             hops the packet is allowed to travel through before its dropped  
+   DanKamin  So if a TTL is 5, it will go 5 hops and then die                 
+   DanKamin  sending back an ICMP Time Exceeded Message (which has the IP and 
+             TCP header, hint hint)                                           
+   DanKamin  So a Traceroute just sends a packet with a TTL of 1, 2, 3, 4, 5, 
+             etc. until it gets all the way there                             
+   DanKamin  a stateless traceroute just sends all the iterations at once --  
+             in the example's case, from 1 to 13 get sent                     
+   DanKamin  when responses come back, we look at the IP and TCP headers      
+             contained inside to figure out who we were trying to scan        
+   DanKamin  in this case, every time we were looking at 66.35.250.150        
+   DanKamin  At the end of the scan, we see that our estimation of 12 hops    
+             was a bit off--it was in fact 13 hops away                       
+   DanKamin  but as we'll see later, the estimation remains very useful       
+   DanKamin  Later examples demonstrate more advanced modes of Scanrand       
+             DNS resolution is presently synchronous, so it slows down        
+   DanKamin  operation...ideally, you'd use a tool that automagically takes   
+             in HTTP logs w/ IPs and replaces all the IPs with their DNS      
+             names                                                            
+   DanKamin  there's quite a few out there, if I remember right               
+   * sarnold sets mode: +o DanKamin
+   DanKamin  Small technical difficulties out here, sorry for disappearing    
+             :-)                                                              
+   DanKamin  One of the more interesting things bout a combined port scanner  
+             and tracerouter is that we can do both at the same time          
+   DanKamin  This is shown by the next entry in the scanrand logs (again, at  
+             http://www.doxpara.com/read.php/docs/scanrand_logs.html )        
+             The returns are out-of-order, but as you can see, while first    
+   DanKamin  hops are all identical, the farther out we get, the more         
+             divergent our scan becomes                                       
+   DanKamin  this is of course what we'd expect                               
+   DanKamin  Future versions of scanrand are going to explicitly support      
+             remote mesh discovery                                            
+             this is going to involve source routing to a known point n hops  
+   DanKamin  away, setting TTL to n+1, then attempting to reach various       
+             addresses expected to be as far away as possible from eachother  
+             in remote routing tables                                         
+   DanKamin  the speed of the stateless approach should render most networks  
+             traceable in astonishingly little time                           
+   DanKamin  but we'll see :-)                                                
+   DanKamin  One thing of note is the fact that it is very feasible to split  
+             the scanning and receiving processes across machines             
+   DanKamin  so for example, one system could be designated the scan          
+             collector, while everyone else has their results forwarded to it 
+   DanKamin  This is almost an alternate mode of source routing :-)           
+   DanKamin  and it's demonstrated in the final log entry                     
+   DanKamin  Next up is paratrace, which is actually a fork of scanrand       
+   DanKamin  split off because it really does something different t           
+   DanKamin  than it                                                          
+   DanKamin  http://www.doxpara.com/read.php/docs/paratrace_logs.html         
+   DanKamin  While scanrand initiates new connections to search networks,     
+             paratrace uses existing connections                              
+   DanKamin  This is the only effective way to monitor policy routes, and can 
+             also penetrate through stateful firewalls                        
+   DanKamin  The idea is simple:  Traceroute is entirely a Layer 3 activity   
+             -- iterate the TTL, observe the ICMP Time Exceeded reply.        
+   DanKamin  It doesn't matter what we have at Layer 4.                       
+   DanKamin  So if Layer 4 is valid TCP traffic, Traceroute doesn't care      
+   DanKamin  Now, TCP has the capacity to support redundant packets -- it's   
+             just expected as part of the unreliable network that IP offers   
+   DanKamin  in fact, this feature is used for a sort of in-session TCP ping, 
+             "tcp keepalive"                                                  
+   DanKamin  Essentially, paratrace uses keepalives as the transport for a IP 
+             Traceroute                                                       
+   DanKamin  The results of which are seen in the logs                        
+   DanKamin  passive hopcount estimation is used to figure out just how far   
+             to iterate the parasitic traceroute.                             
+   DanKamin  Switching gears a bit, lets talk about Minewt.                   
+   DanKamin  As I mentioned, the original design goal of Paketto was to       
+             examine what could be done by directly manipulating the wire     
+   DanKamin  Minewt is a NAT gateway that operates entirely in software,      
+             directly manipulating the wire to instantiate itself             
+             It uses no kernel resources, save for the raw network            
+   DanKamin  connectivity afforded through libnet/libpcap's manipulation of   
+             sockets and bpf.                                                 
+    sarnold  BPF?                                                             
+   DanKamin  Indeed, not even the MAC address is shared with the kernel -- it 
+             literally looks like a new device showed up on the wire.         
+    sarnold  does linux do BPF? I thought it had netlink or similar in place  
+             of bpf...                                                        
+   DanKamin  BPF is the Berkeley Packet Filter, a standardized interface for  
+             requesting network traffic that matches a standard form.         
+   DanKamin  As sarnold points out, bpf itself is not directly implemented by 
+             all kernels                                                      
+   DanKamin  Libpcap thus implements bpf in userspace when needed -- though I 
+             believe they have their own kernel interface for Linux           
+             The main point is that the Paketto overall is quite insulated    
+   DanKamin  from the vagaries of various kernel networking interfaces; just  
+             give me frames, I'll do the rest :-)                             
+   DanKamin  (vagaries = strangeness)                                         
+   DanKamin  So, looking at the minewt logs at                                
+             http://www.doxpara.com/read.php/docs/minewt_logs.html            
+   DanKamin  This is what happens:                                            
+   DanKamin  ./minewt -i 10.0.1.180 -I 10.0.1.190 -r 10.0.1.254 -v            
+   DanKamin  -i 10.0.1.180  == The IP that machines on my network should talk 
+             to is 10.0.1.180                                                 
+   DanKamin  -I 10.0.1.190  == The IP that the outside world expects to be    
+             hearing from is 10.0.1.190                                       
+   DanKamin  -r 10.0.1.254  == The IP that I will be routing packets towards  
+             (the default gateway) is 10.0.1.254                              
+   DanKamin  -v is just verbose                                               
+   DanKamin  Now, one thing to notice is that very quickly minewt starts      
+             picking up traffic and NATting it correctly                      
+             Minewt is a stateful program, but it's a flexible one -- any     
+   DanKamin  outgoing packet, SYN, TCP Keepalive, or whatnot, contains the    
+             necessary state to start a session                               
+   DanKamin  So between that and the fact that minewt controls its own MAC    
+             addresses,                                                       
+   DanKamin  it's actually possible to start minewt on one machine, kill it,  
+             then start it on another, and *no hosts lose connectivity*       
+   DanKamin  Speedwise, minewt is quite fast -- sub-ms delay!                 
+   DanKamin  FreeBSD is probably the fastest platform, but I've had few       
+             issues elsewhere.                                                
+   DanKamin  In terms of queso/xprobe identification, minewt really offers    
+             only one service:  ICMP Echo -> ICMP Echo Reply                  
+             It uses the incoming ping to construct the outgoing ping reply,  
+   DanKamin  so I expect there is some form of ping that *only* minewt would  
+             generate                                                         
+   DanKamin  I haven't tested this though.                                    
+   DanKamin  Upon receiving a ping, minewt dumps the present state table --   
+             this is noted at the end of the logs.                            
+   DanKamin  Minewt has two features which are moderately interesting         
+   DanKamin  First of all, Minewt implements what I refer to as MAC Address   
+             Translation                                                      
+   DanKamin  This feature really comes for free as part of the                
+             infrastructure.                                                  
+   DanKamin  Because I don't use the kernel, I can't take advantage of any of 
+             its niceties like the ARP cache                                  
+   DanKamin  ARP exists to map L3(IP) to L2(MAC)                              
+   DanKamin  Now, here's what's interesting                                   
+   DanKamin  the way NAT works is to map the local port on an outgoing        
+             connection to the internal IP address that spawned it            
+   DanKamin  effectively                                                      
+   DanKamin  NAT maps L4(Port) to L3(IP)                                      
+   DanKamin  and                                                              
+   DanKamin  ARP maps L3(IP) to L2(MAC)                                       
+   DanKamin  so transitively, we can have MAT map L4(Port) to the combination 
+             of L3(IP) and L2(MAC)                                            
+   DanKamin  and since we don't have the kernel ARP cache, we pretty much     
+             have to :-)                                                      
+   DanKamin  This has an interesting side effect                              
+   DanKamin  We now don't care what IP address the backend client picks       
+   DanKamin  if they want to be a 10.* IP, no problem                         
+   DanKamin  If they want to have the external IP address -- the *REAL* IP    
+             address -- no problem as well                                    
+   DanKamin  if ten of them want to have the external IP                      
+   DanKamin  still no problem                                                 
+   DanKamin  because their MACs are all different                             
+   DanKamin  this means, in a limited set of circumstances, packet integrity  
+             can be maintained                                                
+   DanKamin  An interesting question was asked:                               
+             <Zanshin> So with minewt running you can hide behind this        
+   DanKamin  virtual router and not be traced back? Since when you quit the   
+             router is gone... or are there still any traces?                 
+             Minewt is as effective as changing your MAC address and IP       
+   DanKamin  address.  If this will evade some tracing functionality, so will 
+             minewt.                                                          
+   DanKamin  You will almost always be traceable to your subnet, since minewt 
+             needs to route into something.                                   
+   DanKamin  Another interesting feature that Minewt supports is Guerilla     
+             Multicast                                                        
+   DanKamin  this will be much more deeply explored in the next major build   
+             of Paketto                                                       
+   DanKamin  But the basic idea is to get around one of my big annoyances of  
+             modern networks:  One packet, one destination                    
+   DanKamin  I want to send one packet, to many destinations, with the        
+             internet as it is today                                          
+   DanKamin  In case you haven't noticed, the internet doesn't support        
+             multicast too well                                               
+   DanKamin  by which i mean at all :-)                                       
+   DanKamin  The internet -- the IP routable universe -- is indeed locked on  
+             unicast                                                          
+             but we don't directly connect at the layer of IP -- we tend to   
+   DanKamin  use ethernet to interface with IP, and ARP translates Ethernet   
+             MACs to Internet IP's                                            
+   DanKamin  Ethernet supports broadcast and multicast just fine -- MAC of    
+             FF:FF:FF:FF:FF:FF or 01:00:5E:??:??:??, respectively             
+   DanKamin  Now, remember how we use ARP to link MACs to IP?                 
+             Lets use ARP to link a *Unicast* IP, perfect for the Internet,   
+   DanKamin  to a *Broadcast/Multicast* IP address, perfect for everyone on   
+             our LAN                                                          
+             That way, when the upstream router wants to return packets,      
+   DanKamin  they'll ARP, see BC/MC, and send that to the switch -- which of  
+             course will split the frame out to everyone                      
+    sarnold  oooh :)                                                          
+             As is, there's little we can do with this besides sniff all      
+   DanKamin  traffic coming out of Minewt.  MUCH more interesting work with   
+             this technique is coming in future builds, however.              
+   DanKamin  The Helix Community Source is expected to get quite the workout  
+   DanKamin  One IP on a LAN will be designated the unicast IP that all       
+             shared transmissions are routed through                          
+   DanKamin  And every viewing client will share the load of responding to    
+             packets -- UDP if necessary, TCP as needed                       
+   DanKamin  But that's 1.1 / 2.0 talk :-D                                    
+   DanKamin  There's many, many things possible with raw networking           
+   DanKamin  quite a few of which I hope I don't have to write!               
+             While C has great support for directly connecting to the wire,   
+   DanKamin  other languages don't.  I'd like to bring programmers of those   
+             languages into the fold                                          
+   DanKamin  Thus is the purpose of Linkcat, or lc.                           
+   DanKamin  lc is basically netcat at layer 2 -- give me data, I throw it on 
+             the wire.                                                        
+   DanKamin  netcat throws it into a TCP session                              
+   DanKamin  linkcat literally throws it onto the ether                       
+   DanKamin  http://www.doxpara.com/read.php/docs/lc_logs.html                
+   DanKamin  This shows logs of linkcat allowing me to cut and paste an ICMP  
+             echo                                                             
+   DanKamin  text-mode ethereal proves we're actually sending a valid packet  
+             linkcat supports both a near-raw packet mode based on libpcap    
+   DanKamin  (you can throw tcpdump logs into linkcat for retransmission,     
+             though tcpreplay is a better tool for that)                      
+   DanKamin  and the ASCII mode seen in the logs                              
+   DanKamin  Of some note is the support for HMACs in Ethernet Trailers.      
+   DanKamin  IP has an explicit length field that says how much it cares      
+             about                                                            
+   DanKamin  but Ethernet lets you throw more on, up to the Maximum           
+             Transmission Unit(MTU) size                                      
+   DanKamin  so we can just throw extra data there -- including an optionally 
+             parsed cryptovariable that authenticates the data!               
+   DanKamin  So if you ever wanted to sign your ARPs                          
+   DanKamin  this is one way to do it :-)                                     
+   DanKamin  Much more work will be done using Ethernet Trailers in future    
+             builds -- this is a proof of concept                             
+   DanKamin  Linkcat will sign arbitrary frames using a shared secret, as is. 
+   DanKamin  Finally, last, but not least.                                    
+   DanKamin  Pretty pictures!                                                 
+   DanKamin  http://www.doxpara.com/pics/index.php?album=phentropy/           
+             Based on the excellent research of Michel Zalewski               
+   DanKamin  (http://razor.bindview.com/publish/papers/tcpseq.html),          
+             phentropy provides three dimensionsal visualization of the       
+             randomness of arbitrary datasets                                 
+   DanKamin  usage is simple:                                                 
+   DanKamin  phentropy data                                                   
+   DanKamin  if it's ascii formatted,                                         
+   DanKamin  phentropy -a data                                                
+   DanKamin  Output is quite interesting.                                     
+   DanKamin  bash_rand1 is probably the most directly useful -- this is a     
+             plotting of Bash's $RAND variable                                
+   DanKamin  it exhibits notable planes and clumps -- not something you'd     
+             expect from genuinely random data                                
+   DanKamin  bash_rand2 shows the dataset rotated                             
+             The tool used to do these renderings is exceedingly              
+             fast.  Released at SIGGRAPH 2002 and now available at            
+   DanKamin  openqvis.sourceforge.net, OpenQVIS renders *arbitrary* three     
+             dimensional datasets in realtime, using Pixel shader hardware    
+             found in advanced 3D cards                                       
+   DanKamin  It's good to do more with 3D hardware than blow things up :-)    
+   DanKamin  Intentionally nonrandom input renders *really* interestingly.    
+   DanKamin  The BSD Kernel looks akin to a Borg Cube.                        
+   DanKamin  The default background to Windows XP ends up looking like a set  
+             of three triangles.                                              
+             A comparison of the left channel and right channel of some music 
+   DanKamin  I wrote a while back turned out the most interesting -- it       
+             became a pipe, with an apparently near hollow interior           
+             (see  stereo_r_vs_l_8)                                           
+   DanKamin  Linkcat has a mode -- -o m-n -- to emit data suitable for        
+             phentropy to visualize                                           
+   DanKamin  It will be very interesting over the next few months to see what 
+             phentropy/openqvis make of many datasets.                        
+             In terms of what phentropy represents... take four values from   
+   DanKamin  the data:  a, b, c, d.  In between those four are three deltas   
+             -- b-a, c-b, d-c.  Make those three an X,Y,Z point, and plot it  
+   DanKamin  That's what each point is.                                       
+             Now, the set of all points can basically be interpreted as       
+   DanKamin  clustering behavior -- these are sections where deltas, no       
+             matter how they're distributed across the total range of values, 
+             always end up being similar                                      
+   DanKamin  truly random data should have no clusters                        
+   DanKamin  very nonrandom data (like the slashdot comments) should focus on 
+             only a few known zones                                           
+   DanKamin  So that's that!                                                  
+   DanKamin  Lots more coming to Paketto for 2003,                            
+   DanKamin  but that's what we've got going now :-)                          
+   DanKamin  If you've got any questions, lemme know...but that's all I've    
+             got for ya now :-)                                               
+    sarnold  DanKamin: great! :)                                              
+    sarnold  DanKamin: many thanks for the presentation :)                    
+   DanKamin  *bows*                                                           
+    sarnold  i'd like to thank dan, raciel, acs, and riel for giving          
+             top-notch presentations today                                    
+   DanKamin  Thanks for the invite :-)                                        
+    sarnold  and I'd like to thank all our translators, making uninet         
+             available to so many more people ;)                              
+    sarnold  and with that, I bid you all goodnight, because I've got a bus   
+             to catch! :)                                                     
+   DanKamin  Don't miss da bus :-)                                            
+    zanshin  thanks for the presentation DanKarmin.                           
+   DanKamin  You're welcome... hopefully the tools will be of use!            
+    zanshin  I will reread it tomorrow.... it's 03:34 now.... going to sleep  
+             :0) night.                                                       
+     Ston    perl -e 'print "CLAP "x1000'                                     
+   DanKamin  *laughs* nice, Ston                                              
+     Ston    =)))                                                             
+   DarkLinux hola a todos                                                     
+     Ston    hmm i think everybuddy is sleeping! :(                           
+             About: GunStamp is a program which can be used whenever accurate 
+             timestamping of events are required. It syncronizes the computer 
+             clock to an external time source (a GPS) connected to a serial   
+   DanKamin  port, and then use this clock to timestamp events. The events    
+             are received as positive pulses (+5v - +15v) connected to the    
+             acknowledge interrupt on the parallel port. Timestamp accuracy   
+             should be within +/- 15us!                                       
+   DanKamin  Whoa!                                                            
+     Ston    DanKamin: thanks a test a cgi log bitchx output with your        
+             presentation :)                                                  
+    passg1   bien o no                                                        
+    passg1   que se hizo hoy por aca, no pude venir                           
+   Ducky_Pha si y usted                                                       
+    passg1   me dejo el bus :(                                                
+    passg1   bien                                                             
+   Ducky_Pha de que ciudad es                                                 
+    passg1   medellin                                                         
+    garoeda  pfoe...my hands are broken                                       
+    garoeda  translating is heavy suffering                                   
+    garoeda  anyway, what to do with the dutch logs?                          
+   DanKamin  garoeda thank you so much :-)                                    
+   DanKamin  Send me a copy, send seth copy too                               
+    passg1   hehe I better dont translate anything since I have an old and    
+             heavy IBM keyboard                                               
+     Ston    daniZzZz: thanks you too :)                                      
+     Ston    DanKamin: thanks you too :)                                      
+    garoeda  send ? via dcc or mail or ?                                      
+   DanKamin  dan@doxpara.com                                                  
+    garoeda  ok, wrote it down, now, how to save it from Kvirc :-)            
+
+   Generated by irclog2html.pl by Jeff Waugh - find it at freshmeat.net!
